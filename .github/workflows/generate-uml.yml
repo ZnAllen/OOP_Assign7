@@ -1,0 +1,28 @@
+name: Generate UML Diagram
+
+on:
+  push:
+    paths:
+      - 'UML.puml'
+
+jobs:
+  generate-uml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install PlantUML and Graphviz
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y plantuml graphviz
+
+      - name: Generate UML Diagram
+        run: |
+          plantumlt UML.puml
+          mv UML.png README.md
+          git add README.md
+          git commit -m "Update UML diagram"
+          git push
+
