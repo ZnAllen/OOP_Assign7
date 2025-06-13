@@ -20,7 +20,7 @@ jobs:
 
       - name: Generate UML Diagram
         run: |
-          plantumlt UML.puml
+          plantuml UML.puml
           mv UML.png README.md
           git add README.md
           git commit -m "Update UML diagram"
