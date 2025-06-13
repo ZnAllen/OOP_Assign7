@@ -19,7 +19,8 @@ private:
 
     // Model
     std::vector<GameObject*> _objs;
-
+	std::vector<GameObject*> _bullets;
+	int selectIDX;
     // View
     View& _view; 
 };

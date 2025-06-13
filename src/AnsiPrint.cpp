@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cstdio>
 #include <iostream>
+#include <string>
 #include "AnsiPrint.h"
 
 
@@ -11,9 +12,9 @@ const char *endc="m";
 const char *hilit="1;";
 const char *blink="5;";
 const char *recover="\x1b[0m";
-const char *fgBase="30;";
-const char *bgBase="40;";
-const int kFormatStrSize=20;
+const char *fgBase="38;5;";
+const char *bgBase="48;5;";
+const int kFormatStrSize=30;
 
 /** 
  * This function takes a string and ansi formatting option such as 
@@ -30,29 +31,48 @@ AnsiPrint(const char *str, Color fg, Color bg, bool hi, bool blinking) {
         return "";
     // creating foreground and background options
     char *foreground=strdup(fgBase);
-    foreground[1]+=fg;
+    //foreground[5]+=fg;
+	int numF = static_cast<int> (fg);
+	std::string STRF = std::to_string(numF).c_str();
+	const char* tempF;
+	tempF = STRF.c_str();
+	strcat(foreground, tempF);
+
     char *background=strdup(bgBase);
-    background[1]+=bg;
+    //background[5]+=bg;
+	int numB = static_cast<int> (bg);
+    std::string STRB = std::to_string(numB).c_str();
+    const char* tempB;
+    tempB = STRB.c_str();
+    strcat(background, tempB);
     // initialize the formatting string
     char formatStr[kFormatStrSize]="";
-    strcat(formatStr, init);
     // according to the options, append appropriate string
+	//strcat(formatStr, init);
     if (hi) {
-        strcat(formatStr, hilit);
-    }
-    if (blinking) {
-        strcat(formatStr, blink);
-    }
+		strcat(formatStr, init);
+		strcat(formatStr, hilit);
+		formatStr[strlen(formatStr) - 1] = 'm';
+	}
+	if (blinking) {
+		strcat(formatStr, init);
+    	strcat(formatStr, blink);
+		formatStr[strlen(formatStr) - 1] = 'm';
+	}
     if (fg!=NOCHANGE) {
+		strcat(formatStr, init);
         strcat(formatStr, foreground);
+		strcat(formatStr,endc);
     }
     if (bg!=NOCHANGE) {
+		strcat(formatStr, init);
         strcat(formatStr, background);
+		strcat(formatStr,endc);
     }
     // terminate the options
-    if (formatStr[strlen(formatStr)-1]==';')
-        formatStr[strlen(formatStr)-1]= '\0';
-    strcat(formatStr,endc);
+    /*if (formatStr[strlen(formatStr)-1]==';')
+    	formatStr[strlen(formatStr)-1]= '\0';
+    strcat(formatStr,endc);*/
 
 
     free(background);
@@ -66,7 +86,6 @@ AnsiPrint(const char *str, Color fg, Color bg, bool hi, bool blinking) {
     res.append(str);
     res.append(recover);
 #endif
-
     return res;
 }
 
@@ -113,4 +132,68 @@ AnsiPrint(const char *str, bool hi, bool blinking) {
     return res;
 
 
+}
+
+std::string
+AnsiPrint(const char *str, int fg, int bg, bool hi, bool blinking) {
+
+    // kick out exceptional case
+    if ((str==NULL)||(strlen(str)==0))
+        return "";
+    // creating foreground and background options
+    char *foreground=strdup(fgBase);
+    //foreground[5]+=fg;
+        std::string STRF = std::to_string(fg).c_str();
+        const char* tempF;
+        tempF = STRF.c_str();
+        strcat(foreground, tempF);
+
+    char *background=strdup(bgBase);
+    //background[5]+=bg;
+    std::string STRB = std::to_string(bg).c_str();
+    const char* tempB;
+    tempB = STRB.c_str();
+    strcat(background, tempB);
+    // initialize the formatting string
+    char formatStr[kFormatStrSize]="";
+    // according to the options, append appropriate string
+        //strcat(formatStr, init);
+    if (hi) {
+                strcat(formatStr, init);
+                strcat(formatStr, hilit);
+                formatStr[strlen(formatStr) - 1] = 'm';
+        }
+        if (blinking) {
+                strcat(formatStr, init);
+        strcat(formatStr, blink);
+                formatStr[strlen(formatStr) - 1] = 'm';
+        }
+    if (fg!=NOCHANGE) {
+                strcat(formatStr, init);
+        strcat(formatStr, foreground);
+                strcat(formatStr,endc);
+    }
+    if (bg!=NOCHANGE) {
+                strcat(formatStr, init);
+        strcat(formatStr, background);
+                strcat(formatStr,endc);
+    }
+    // terminate the options
+    /*if (formatStr[strlen(formatStr)-1]==';')
+        formatStr[strlen(formatStr)-1]= '\0';
+    strcat(formatStr,endc);*/
+
+
+    free(background);
+    free(foreground);
+
+    std::string res;
+#ifdef _WIN
+    res.append(str)
+#else
+    res.append(formatStr);
+    res.append(str);
+    res.append(recover);
+#endif
+    return res;
 }

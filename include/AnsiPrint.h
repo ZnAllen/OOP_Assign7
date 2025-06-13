@@ -28,5 +28,10 @@ std::string AnsiPrint(const char* str,
 std::string AnsiPrint(const char* str,
                       bool hi = false,
                       bool blinking = false);
+std::string AnsiPrint(const char* str,
+                      int fg = 0,
+                      int bg = 0,
+                      bool hi = false,
+                      bool blinking = false);
 
 #endif  // _ANSIPRINT_H
