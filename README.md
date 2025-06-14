@@ -5,6 +5,7 @@
 ### bullet type
 
 |type|function|
+|-------|-------|
 |split|Split into up, down, left, and right|
 |splitX|Split into top left, top right, bottom left, and bottom right|
 |burn|Give to the tank that was hit the burn status that will continued bleeding for a period of time|
@@ -13,6 +14,7 @@
 ### Operation mode
 
 |do|1P|2P|
+|-------|-------|-------|
 |Move up|w|`↑`|
 |Move down|s|`↓`|
 |Move left|a|`←`|
