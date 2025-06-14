@@ -27,4 +27,5 @@
 |change to layer 2|k|2|
 |change to layer 3|l|3|
 
-![UML Diagram](https://raw.githubusercontent.com/ZnAllen/OOP_Assign7/main/UML.png)
+![UML Diagram](https://raw.githubusercontent.com/ZnAllen/OOP_Assign7/main/picture/game_srceen.jpg)
+![UML Diagram](https://raw.githubusercontent.com/ZnAllen/OOP_Assign7/main/picture/UML.png)
